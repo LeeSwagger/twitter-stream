@@ -3,7 +3,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const fs = require('fs');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
-const JsDocPlugin = require('jsdoc-webpack-plugin');
 
 const assetsPath = path.join(__dirname, '/public');
 
