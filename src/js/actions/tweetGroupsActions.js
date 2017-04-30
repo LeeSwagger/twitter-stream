@@ -24,17 +24,20 @@ export function initTweetGroups() {
             [500, 1000],
             [1000, 2000],
             [2000]
-        ].reduce((previousGroups, range, index) => ({
-            ...previousGroups,
-            [`group_${index}`]: {
-                range,
-                tweets: [],
-                capacity: 30,
-                lastUpdateTime: 0,
-                activeTweetId: 0,
-                groupName: `group_${index}`
-            }
-        }), {})
+        ].reduce(
+            (previousGroups, range, index) => ({
+                ...previousGroups,
+                [`group_${index}`]: {
+                    range,
+                    tweets: [],
+                    capacity: 30,
+                    lastUpdateTime: 0,
+                    activeTweetId: 0,
+                    groupName: `group_${index}`
+                }
+            }),
+            {}
+        )
     };
 }
 
@@ -50,10 +53,7 @@ export function receiveTweet(newTweet) {
         const { tweetGroups } = getState();
 
         const {
-            retweeted_status: {
-                retweet_count,
-                favorite_count
-            }
+            retweeted_status: { retweet_count, favorite_count }
         } = newTweet;
 
         const receivedTweet = {
@@ -71,12 +71,18 @@ export function receiveTweet(newTweet) {
                 groupName
             } = tweetGroup;
 
-            if (receivedTweet.score < rangeStart || receivedTweet.score > rangeEnd) {
+            if (
+                receivedTweet.score < rangeStart ||
+                receivedTweet.score > rangeEnd
+            ) {
                 return;
             }
 
             const duplicateTweetIndex = tweets.findIndex(tweet => {
-                return tweet.retweeted_status.id === receivedTweet.retweeted_status.id;
+                return (
+                    tweet.retweeted_status.id ===
+                    receivedTweet.retweeted_status.id
+                );
             });
 
             const tweetAlreadyExists = duplicateTweetIndex > 0;
@@ -114,7 +120,9 @@ export function receiveTweet(newTweet) {
                     groupName,
                     updatedGroup: {
                         ...tweetGroup,
-                        tweets: _.reverse(_.times(tweetsHeap.size(), () => tweetsHeap.pop())),
+                        tweets: _.reverse(
+                            _.times(tweetsHeap.size(), () => tweetsHeap.pop())
+                        ),
                         lastUpdateTime: Date.now(),
                         activeTweetId
                     }

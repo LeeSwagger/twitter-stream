@@ -10,7 +10,6 @@ import BinaryHeap from './../utils/BinaryHeap';
  * Application component
  */
 class Application extends Component {
-
     /**
      * constructor
      *
@@ -43,16 +42,17 @@ class Application extends Component {
      * @return {string} - HTML markup for the component
      */
     render() {
-        const {
-            actions,
-            tweetGroups
-        } = this.props;
+        const { actions, tweetGroups } = this.props;
 
-        const tweetGroupsHeap = new BinaryHeap(({ lastUpdateTime }) => lastUpdateTime);
+        const tweetGroupsHeap = new BinaryHeap(
+            ({ lastUpdateTime }) => lastUpdateTime
+        );
 
         _.map(tweetGroups, tweetGroup => tweetGroupsHeap.push(tweetGroup));
 
-        const sortedGroups = _.reverse(_.times(tweetGroupsHeap.size(), () => tweetGroupsHeap.pop()));
+        const sortedGroups = _.reverse(
+            _.times(tweetGroupsHeap.size(), () => tweetGroupsHeap.pop())
+        );
 
         return (
             <div className="container">
@@ -61,15 +61,23 @@ class Application extends Component {
                     <button
                         className="action-button"
                         onClick={() => {
-                            this.twitterSocket.on(this.receiveTweet, this.handleTweet);
-                        }}>
+                            this.twitterSocket.on(
+                                this.receiveTweet,
+                                this.handleTweet
+                            );
+                        }}
+                    >
                         Subscribe
                     </button>
                     <button
                         className="action-button"
                         onClick={() => {
-                            this.twitterSocket.removeListener(this.receiveTweet, this.handleTweet);
-                        }}>
+                            this.twitterSocket.removeListener(
+                                this.receiveTweet,
+                                this.handleTweet
+                            );
+                        }}
+                    >
                         Unsubscribe
                     </button>
                 </header>
@@ -81,7 +89,7 @@ class Application extends Component {
                             {...tweetGroup}
                         />
                     ))}
-                    <div className="icon-calendar"></div>
+                    <div className="icon-calendar" />
                 </div>
             </div>
         );

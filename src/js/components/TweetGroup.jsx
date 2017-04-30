@@ -7,7 +7,6 @@ import moment from 'moment';
  * TweetGroup component
  */
 export default class TweetGroup extends Component {
-
     /**
      * Initialize flickity slider and
      * save active tweet ID on 'settle' event
@@ -20,11 +19,7 @@ export default class TweetGroup extends Component {
         });
 
         this.tweetsSlider.on('settle', () => {
-            const {
-                actions,
-                tweets,
-                groupName
-            } = this.props;
+            const { actions, tweets, groupName } = this.props;
 
             const { selectedIndex } = this.tweetsSlider;
 
@@ -58,9 +53,15 @@ export default class TweetGroup extends Component {
         if (tweets.length !== prevTweets.length) {
             this.tweetsSlider.activate();
 
-            const activeTweetIndex = tweets.findIndex(tweet => tweet.id === activeTweetId);
+            const activeTweetIndex = tweets.findIndex(
+                tweet => tweet.id === activeTweetId
+            );
 
-            this.tweetsSlider.select(activeTweetIndex > 0 ? activeTweetIndex : 0, false, true);
+            this.tweetsSlider.select(
+                activeTweetIndex > 0 ? activeTweetIndex : 0,
+                false,
+                true
+            );
         }
     }
 
@@ -85,32 +86,36 @@ export default class TweetGroup extends Component {
      * @return {string} - HTML markup for the component
      */
     render() {
-        const {
-            tweets,
-            lastUpdateTime,
-            groupName
-        } = this.props;
+        const { tweets, lastUpdateTime, groupName } = this.props;
 
         const lastUpdate = moment(lastUpdateTime);
 
-        const [totalLikeCount, totalRetweetCount] = _.reduce(tweets, (total, tweet) => {
-            const {
-                retweeted_status: {
-                    favorite_count,
-                    retweet_count
-                }
-            } = tweet;
+        const [totalLikeCount, totalRetweetCount] = _.reduce(
+            tweets,
+            (total, tweet) => {
+                const {
+                    retweeted_status: { favorite_count, retweet_count }
+                } = tweet;
 
-            const [likesCount, retweetsCount] = total;
+                const [likesCount, retweetsCount] = total;
 
-            return [likesCount + favorite_count, retweetsCount + retweet_count];
-        }, [0, 0]);
+                return [
+                    likesCount + favorite_count,
+                    retweetsCount + retweet_count
+                ];
+            },
+            [0, 0]
+        );
 
         return (
             <div className="tweet-group">
                 <time className="last-update">
-                    <span className="date">{lastUpdate.format('DD/MM/YYYY')}</span>
-                    <span className="time">{lastUpdate.format('hh:mm')}</span>
+                    <span className="date">
+                        {lastUpdate.format('DD/MM/YYYY')}
+                    </span>
+                    <span className="time">
+                        {lastUpdate.format('hh:mm')}
+                    </span>
                 </time>
                 <div className="tweets-container">
                     <div className="tweets" ref={groupName}>
@@ -121,16 +126,20 @@ export default class TweetGroup extends Component {
                 </div>
                 <div className="total">
                     <div className="measure">
-                        <div className="icon icon-twitter"></div>
+                        <div className="icon icon-twitter" />
                         <div className="count">{tweets.length}</div>
                     </div>
                     <div className="measure">
-                        <div className="icon icon-heart"></div>
-                        <div className="count">{this.numberFormatter(totalLikeCount)}</div>
+                        <div className="icon icon-heart" />
+                        <div className="count">
+                            {this.numberFormatter(totalLikeCount)}
+                        </div>
                     </div>
                     <div className="measure">
-                        <div className="icon icon-retweet"></div>
-                        <div className="count">{this.numberFormatter(totalRetweetCount)}</div>
+                        <div className="icon icon-retweet" />
+                        <div className="count">
+                            {this.numberFormatter(totalRetweetCount)}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,8 +151,8 @@ export default class TweetGroup extends Component {
  * @prop {Object} propTypes - The props that are passed to this component
  */
 TweetGroup.propTypes = {
-	range: PropTypes.array,
-	tweets: PropTypes.array,
-	capacity: PropTypes.number,
-	lastUpdateTime: PropTypes.number.isRequired
+    range: PropTypes.array,
+    tweets: PropTypes.array,
+    capacity: PropTypes.number,
+    lastUpdateTime: PropTypes.number.isRequired
 };
